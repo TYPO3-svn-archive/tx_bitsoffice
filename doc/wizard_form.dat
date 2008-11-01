@@ -1,0 +1,43 @@
+a:7:{s:4:"save";a:3:{s:13:"extension_key";s:10:"bitsoffice";s:18:"print_wop_comments";s:1:"0";s:15:"overwrite_files";a:22:{s:9:"ChangeLog";s:1:"1";s:10:"README.txt";s:1:"1";s:27:"class.tx_bitsoffice_cm1.php";s:1:"1";s:12:"ext_icon.gif";s:1:"1";s:17:"ext_localconf.php";s:1:"1";s:14:"ext_tables.php";s:1:"1";s:14:"ext_tables.sql";s:1:"1";s:13:"locallang.xml";s:1:"1";s:16:"locallang_db.xml";s:1:"1";s:13:"cm1/clear.gif";s:1:"1";s:15:"cm1/cm_icon.gif";s:1:"1";s:24:"cm1/cm_icon_activate.gif";s:1:"1";s:12:"cm1/conf.php";s:1:"1";s:13:"cm1/index.php";s:1:"1";s:17:"cm1/locallang.xml";s:1:"1";s:19:"doc/wizard_form.dat";s:1:"1";s:20:"doc/wizard_form.html";s:1:"1";s:31:"pi1/class.tx_bitsoffice_pi1.php";s:1:"1";s:17:"pi1/locallang.xml";s:1:"1";s:24:"pi1/static/editorcfg.txt";s:1:"1";s:30:"static/setup.txt/constants.txt";s:1:"1";s:26:"static/setup.txt/setup.txt";s:1:"1";}}s:6:"emconf";a:1:{i:1;a:7:{s:5:"title";s:0:"";s:11:"description";s:0:"";s:8:"category";s:6:"plugin";s:5:"state";s:4:"beta";s:12:"dependencies";s:0:"";s:6:"author";s:12:"Joachim Karl";s:12:"author_email";s:25:"joachim.karl@bitsafari.de";}}s:6:"fields";a:1:{i:1;a:3:{s:11:"which_table";s:10:"tt_content";s:5:"title";s:20:"tt_content (Content)";s:6:"fields";a:1:{i:1;a:10:{s:9:"fieldname";s:25:"tx_bitsoffice_office_file";s:5:"title";s:25:"tx_bitsoffice_office_file";s:4:"type";s:5:"files";s:12:"excludeField";s:1:"1";s:7:"_DELETE";s:1:"0";s:15:"conf_files_type";s:6:"images";s:10:"conf_files";s:1:"1";s:17:"conf_max_filesize";s:3:"500";s:18:"conf_files_selsize";s:1:"1";s:17:"conf_files_thumbs";s:1:"0";}}}}s:2:"pi";a:1:{i:1;a:9:{s:5:"title";s:10:"bitsoffice";s:13:"plus_user_obj";s:1:"0";s:23:"plus_not_staticTemplate";s:1:"0";s:14:"apply_extended";s:1:"1";s:7:"addType";s:9:"list_type";s:8:"plus_wiz";s:1:"0";s:20:"plus_wiz_description";s:0:"";s:8:"tag_name";s:0:"";s:12:"plus_user_ex";s:1:"0";}}s:6:"module";a:0:{}s:2:"cm";a:1:{i:1;a:6:{s:5:"title";s:13:"Import Office";s:7:"options";s:6:"bottom";s:12:"second_level";s:1:"1";s:9:"only_page";s:1:"0";s:12:"only_if_edit";s:1:"0";s:11:"remove_view";s:1:"0";}}s:2:"ts";a:1:{i:1;a:3:{s:5:"title";s:9:"setup.txt";s:9:"constants";s:0:"";s:5:"setup";s:1049:"plugin.tx_bitsoffice_pi1 {
+	imageCObject_scaledImage {
+		file.width = 100
+		file.import.current = 1
+		imageLinkWrap = 1
+		imageLinkWrap {
+			width = 800
+			JSwindow = 1
+			enable = 1
+		}
+		wrap = <div style="text-align:center; margin-bottom: 10px;"> | </div>
+	}
+	tagWraps {
+
+		bitsOffice = <h1> | </h1>
+		heading1 = <h1> | </h1>
+		heading2 = <h2> | </h2>
+		heading3 = <h3> | </h3>
+		heading4 = <h4> | </h4>
+		heading5 = <h5> | </h5>
+		paragraph = <p> | </p>
+		bold = <strong> | </strong>
+		italic = <em> | </em>
+		underlined = <span style="text-decoration: underline;"> | </span>
+		unorderedlist = <ul> | </ul>
+		listitem = <li> | </li>
+		superscript = <sup> | </sup>
+		subscript = <sub> | </sub>
+		preformatted = <pre> | </pre>
+		indented = <blockquote> | </blockquote>
+		firstLineIndent = <p> | </p>
+		descr-ol-list =  <li> | </li>
+		test = <h1> | </h1>
+		descr = <div> | </div> 
+	}
+	parseOptions {
+		renderMicrosoftSmartTags = 1
+		renderColors = 1
+		renderBackgroundColors = 1
+		renderFontFaces = 1
+	}
+}
+";}}}

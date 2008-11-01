@@ -1,0 +1,44 @@
+plugin.tx_bitsoffice_pi1 {
+	imageCObject_scaledImage {
+		file.width = 100
+		file.import.current = 1
+		imageLinkWrap = 1
+		imageLinkWrap {
+			width = 800
+			JSwindow = 1
+			enable = 1
+		}
+		wrap = <div style="text-align:center; margin-bottom: 10px;"> | </div>
+	}
+	
+	
+	bulletList = ILIAS List Bullet
+	
+	tagWraps {
+
+		
+		heading1 = <h1> | </h1>
+		heading2 = <h2> | </h2>
+		heading3 = <h3> | </h3>
+		heading4 = <h4> | </h4>
+		heading5 = <h5> | </h5>
+		paragraph = <p> | </p>
+		bold = <strong> | </strong>
+		italic = <em> | </em>
+		underlined = <span style="text-decoration: underline;"> | </span>
+		unorderedlist = <ul> | </ul>
+		listitem = <li> | </li>
+		superscript = <sup> | </sup>
+		subscript = <sub> | </sub>
+		preformatted = <pre> | </pre>
+		indented = <blockquote> | </blockquote>
+		firstLineIndent = <p> | </p>
+		
+	}
+	parseOptions {
+		renderMicrosoftSmartTags = 1
+		renderColors = 1
+		renderBackgroundColors = 1
+		renderFontFaces = 1
+	}
+}
