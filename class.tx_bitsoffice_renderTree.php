@@ -184,13 +184,21 @@ class tx_bitsoffice_renderTree extends t3lib_extobjbase {
 		}
 		
 		
+		function setPlugInId($id) {
+				$this->plugInId = $id;
+		}
+		
+		
+		function getPlugInId () {
+				return $this->plugInId;
+		}
 		
 		function setReferenceLink ($val) {
 		
 				$this->referenceLink = $val;
 		}
 		
-		function getReferenceLink ($val) {
+		function getReferenceLink () {
 		
 				return $this->referenceLink;
 		}
@@ -203,6 +211,7 @@ class tx_bitsoffice_renderTree extends t3lib_extobjbase {
 		*/
 	
 		function writeReference (&$refArray) {
+				
 				if (is_array($refArray)) {
 						foreach ($refArray as $key => $val) {
 								$refID = $GLOBALS['temp_ids'][$key];
@@ -234,14 +243,13 @@ class tx_bitsoffice_renderTree extends t3lib_extobjbase {
 																	);
 							
 														$replaceVal = array(
-																			$this->importID, //href
+																			$this->getPlugInId(), //href
 																			$refID, //src
 																			$refArray[$key]['title']
 																	);
 												}
 												
 												while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-													$this->output(str_replace($needle, $replaceVal, $this->referenceLink));
 													$row['bodytext'] = str_replace("---<".trim($key).">---", str_replace($needle, $replaceVal, $this->referenceLink), $row['bodytext']);
 													$GLOBALS['TYPO3_DB']->exec_UPDATEquery($from, $where, $row);	
 												}
