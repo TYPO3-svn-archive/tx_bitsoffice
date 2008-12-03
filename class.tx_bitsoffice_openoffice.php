@@ -151,11 +151,12 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 				$this->cObj 		= t3lib_div :: makeInstance('tslib_cObj');
 				$this->unzipObj 	= t3lib_div :: makeInstance('tx_bitsoffice_unzip');
 				$this->pageTreeObj 	= t3lib_div :: makeInstance('tx_bitsoffice_renderTree');
+
+				if (!is_array ($conf)) { $conf = $this->loadTypoScriptForBEModule($this->extKey); }
 				
-				$conf = $this->loadTypoScriptForBEModule($this->extKey);
 				// if TS setup is available override the config from class.tx_bitsoffice_xml.php
 				if (is_array ($conf)) { $this->officeConf = $conf; }
-		
+				
 				$files = $this->unzipObj->init($fileName);
 				$this->imgData = $this->unzipObj->getFilePath();
 				
@@ -171,13 +172,10 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 				}
 	
 				if (count($files))    {
-		
 						$fileInfo = $this->unzipObj->getFileFromXML('content.xml');
-						
 						$XML_content = $fileInfo['content'];
 				
 						if ($XML_content)    {
-		
 								$p = xml_parser_create();
 								xml_parse_into_struct($p,$XML_content,$vals,$index);
 								xml_parser_free($p);
@@ -287,6 +285,7 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 							
 							
 							if (!$this->officeConf['crossRef.']['useAjax'] == 1) {
+									$this->pageTreeObj->setPlugInId($this->officeConf['crossRef.']['ifAjax.']['plugInId']);
 									$this->pageTreeObj->setReferenceLink($this->officeConf['crossRef.']['ifAjax.']['link']);
 							} else {
 							
@@ -304,6 +303,7 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 	
 	
 		function getArrayForPageTree(&$bodyArray)    {
+				
 				reset ($bodyArray);
 				$listItems ='';
 		
@@ -463,13 +463,14 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 				
 				
 								case 'TEXT:P':
-								
+										
 										// check wether tag is a paragraph and if it's not an empty paragraph
 															
-										 if (!empty($v['tag']['TEXT:P']) /*&& !empty($v['tag']['TEXT:P'])*/) {
-										 
-												$HTML_code[] = $this->wrapItem($v);
-					
+										 if (!empty($v['tag']['TEXT:P'])) {
+										 		
+												$c = $this->getParagraphContent($v);
+												if (!empty($c)) {$HTML_code[] = $this->wrapItem($v, $c);}
+												
 										 }
 										
 										// if the next element is a heading or it doesn't exist a next element
@@ -668,7 +669,7 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 		
 				if (is_array($v['subTags']))    {
 						if ($this->filesExt == 'sxw') {
-								$v['subTags'] = $this->indentSubTags($v['subTags']); // returns the subtags of the bodyArray
+								$v['subTags'] = $this->indentSubTagsRec($v['subTags']); // returns the subtags of the bodyArray
 						}
 						
 						reset($v['subTags']);
@@ -722,7 +723,6 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 					
 					
 										case 'TEXT:SPAN':
-											
 												if (t3lib_div::inList('complete,cdata',$subV['type']))    {
 														if(!$subV['subTags']){
 															
@@ -845,7 +845,7 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 																							);
 																							
 																							$imgData = str_replace($needle, $replaceVal, $this->officeConf['images.']['imgPath.']['greaterMaxW']);
-																							$content.=$this->cObj->stdWrap($imgData,$this->officeConf['imgWrap.']);
+																							$content.=$this->cObj->stdWrap($imgData,$this->officeConf['images.']['imgWrap.']);
 																					
 							
 																				} else {
@@ -865,7 +865,7 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 																						);
 																						
 																						$imgData = str_replace($needle, $replaceVal, $this->officeConf['images.']['imgPath.']['lowerMaxW']);
-																						$content .= $this->cObj->stdWrap($imgData,$this->officeConf['imgWrap.']);
+																						$content .= $this->cObj->stdWrap($imgData,$this->officeConf['images.']['imgWrap.']);
 																				}
 																		}
 																}
@@ -921,9 +921,7 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 				foreach ($this->imgData  as $key => $val ) {
 						
 						if (substr_count  ( $val['filepath']  , $str ) == 1) {
-								
 								return $imgData = $this->unzipObj->getFileFromXML(substr($subV['attributes']['XLINK:HREF'], - strlen($this->imgData[$key]['filepath'])));
-										
 						}
 				}
 		}
@@ -1101,44 +1099,22 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 		 * @param	[type]		$style: ...
 		 * @return	[type]		...
 		 */
-		function spanFormat($value,$style)	{
+		 
+		function spanFormat($value,$style)    {
 				
-				if (t3lib_div::inList('P',substr($style,0,1)) && t3lib_div::testInt(substr($style,1)))    {
-						
-						$wrap = $this->parsedStyles[$style]['_wrap'];
-		
-				} else {
-					
-						if ($this->mapOOtoCommon[$style]) {
-								
-								$wrap = explode ('|',$this->officeConf['tagWraps.'][$this->mapOOtoCommon[$style]]);
-			
-						} else {        // there is no style which could be mapped ...
-							
-								if ($this->officeConf['tagWraps.'][strtolower($style)]) {
-										
-										$wrap = explode ('|',$this->officeConf['tagWraps.'][strtolower($style)]);
+				if(!empty($this->officeConf['tagWraps.'][$style])) {
+						$wrap = explode ('|', $this->officeConf['tagWraps.'][strtolower($style)]);
+				} else { $wrap = $this->parsedStyles[$style]['_wrap']; }
 				
-								} else {        // no, but really no matching style found. So apply the default one.
-										
-										$wrap = explode ('|',$this->officeConf['tagWraps.'][$this->mapOOtoCommon['_default']]);
-				
-								}
-						}
-				}
-				
-				// $wrap = $this->parsedStyles[$style]['_wrap'];
-				if (is_array($wrap) && count($wrap)>1)	{
+				if (is_array($wrap) && count($wrap)>1)    {
 						return $wrap[0].$value.$wrap[1];
 				} else {
 						$this->noProcessing(array('STYLE'=>$style));
 						return $value;
 				}
 		}
-		
-		
-		
-		
+	
+	
 		/*****************************************************************
 		* this function searchs for wrap information and wraps the content
 		* 
@@ -1147,7 +1123,7 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 		******************************************************************/
 	
 		function wrapItem ($val, $content = '') {
-			
+				
 				$sN = $val['attributes']['TEXT:STYLE-NAME'];
 				if (t3lib_div::inList('P',substr($sN,0,1)) && t3lib_div::testInt(substr($sN,1)))    {
 						$wrap = $this->parsedStyles[$sN]['_wrap'];
@@ -1169,13 +1145,12 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 						if (!empty($content)) {
 								return $wrap[0].$content.$wrap[1];
 						} else {
-								return $wrap[0].$this->getParagraphContent($val).$wrap[1];	
+								$this->noProcessing($val);
 						}
 					//$this->chr10BR=0;
 				} else $this->noProcessing($val);
 	
 		}
-		
 		
 		
 		
