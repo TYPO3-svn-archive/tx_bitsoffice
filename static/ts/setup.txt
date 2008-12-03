@@ -1,4 +1,4 @@
-plugin.tx_bitsoffice_pi1 {
+plugin.bitsoffice {
 	imageCObject_scaledImage {
 		file.width = 100
 		file.import.current = 1
@@ -12,29 +12,110 @@ plugin.tx_bitsoffice_pi1 {
 	}
 	
 	
+	images {
+		imgPath {
+			greaterMaxW = <a href="###IMGHREF###" ><img src="###IMGSRC###" class="###IMGCLASS###" width="###IMGWIDTH###" height="###IMGHEIGHT###" style="border: 1px solid black;" border="0" title="###IMGTITLE###" alt="" /></a><br />
+			lowerMaxW = <img src="###IMGSRC###" class="###IMGCLASS###" width="###IMGWIDTH###" height="###IMGHEIGHT###"/><br />
+			
+			icon = <img src="###IMGSRC###" class="###ICONCLASS###" width="###IMGWIDTH###" height="###IMGHEIGHT###"/>
+		}
+		imgWrap {
+				wrap = <div class="show" id="images">|</div>
+			}
+	}
+	
+	
+	crossRef {
+		
+		# we use this to switch between the link types
+		useAjax = 1
+		
+		#
+		#  if you want to you use a frontentplugin which uses a ajax we need the
+		#
+		
+		ifAjax {
+			# set plugInId to the page Id where you have stored your frontend plugin
+			plugInId = 1
+			link = <a href=index.php?id="###IMPORTID###"&type=160&action=getTopic&uid="###REFID###" rel='cross-ref' ext:cls="###LINKTEXT###">###LINKTEXT###</a>
+		}
+		
+		ifNoAjax {
+			link = <a href=index.php?id="###REFID###">###LINKTEXT###</a>
+		}
+	} 
+	
+	# put the name of your bullet list style which you have defined in oOWriter here			
 	bulletList = ILIAS List Bullet
 	
+	# put the name of your icon style which you have defined in oOWriter here
+	# If you want to use icons within your text you have to define a seperate style			
+	icon = icon
+	
+	
+	#
+	# configure the names of your style formats which you have used in your oOWriter document. You have to lowercase the names!
+	
 	tagWraps {
-
-		
-		heading1 = <h1> | </h1>
-		heading2 = <h2> | </h2>
-		heading3 = <h3> | </h3>
-		heading4 = <h4> | </h4>
-		heading5 = <h5> | </h5>
-		paragraph = <p> | </p>
-		bold = <strong> | </strong>
-		italic = <em> | </em>
-		underlined = <span style="text-decoration: underline;"> | </span>
-		unorderedlist = <ul> | </ul>
-		listitem = <li> | </li>
-		superscript = <sup> | </sup>
-		subscript = <sub> | </sub>
-		preformatted = <pre> | </pre>
-		indented = <blockquote> | </blockquote>
-		firstLineIndent = <p> | </p>
-		
+			
+			
+			###
+			# some common styles.
+			###
+			
+			heading1 = <h1> | </h1>
+			heading2 = <h2> | </h2>
+			heading3 = <h3> | </h3>
+			heading4 = <h4> | </h4>
+			heading5 = <h5> | </h5>
+			paragraph = <p> | </p>
+			bold = <strong> | </strong>
+			italic = <em> | </em>
+			underlined = <span style="text-decoration: underline;"> | </span>
+			unorderedlist = <ul> | </ul>
+			listitem = <li> | </li>
+			superscript = <sup> | </sup>
+			subscript = <sub> | </sub>
+			preformatted = <pre> | </pre>
+			indented = <blockquote> | </blockquote>
+			firstLineIndent = <p> | </p>
+			standard = <p class="standard">|</p>
+			
+			
+			###
+			# some custom styles. Define your own right here
+			###
+			
+			img-icon 					= 
+			img-scrshot 				= 
+			zw_ueberschrift 			= <h3 class="zw_ueberschrift">|</h3>
+			zw_ueberschrift_kursiv 		= <h3 class="zw_ueberschrift_kursiv">|</h3>
+			description 				= <p class="description">|</p>
+			description-end				= <p class="description-end">|</p>
+			descr-ol 					= <p class="descr-ol">|</p>
+			descr-ol-list				= <p class="descr-ol-list">|</p>
+			ha-beg 						=<p class="ha-beg">|</p>
+			ha-result 					= <p class="ha-result">|</p>
+			anschrift 					= <p class="anschrift">|</p>
+			kontakt 					= <p class="kontakt">|</p>
+			mod-heading 				= <p class="mod-heading">|</p>
+			ilias additional 			= <div class="hint">|</div>
+			keyboard-shortcut			= <span class="shrtct">|</span>
+			qomet						= <span class="qomet">|</span>
+			bold						= <span class="bold">|</span>
+			kursiv						= <span class="kursiv">|</span>
+			
+			###
+			# odt specific formats
+			###
+			
+			Heading_20_1 				= heading1
+			Heading_20_2 				= heading2
+			Heading_20_3 				= heading3
+			Heading_20_4 				= heading4
+			Heading_20_5 				= heading5
 	}
+	
 	parseOptions {
 		renderMicrosoftSmartTags = 1
 		renderColors = 1
