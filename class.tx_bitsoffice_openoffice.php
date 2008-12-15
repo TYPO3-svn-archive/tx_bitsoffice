@@ -157,6 +157,17 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 				// if TS setup is available override the config from class.tx_bitsoffice_xml.php
 				if (is_array ($conf)) { $this->officeConf = $conf; }
 				
+				// setup TS configuration for pageTree
+				$this->pageTreeObj->setAjaxMode($this->officeConf['crossRef.']['useAjax']);
+				$this->pageTreeObj->setColPos($this->officeConf['colPos']);
+							
+				if (!$this->pageTreeObj->getAjaxMode() == 1) {
+						$this->pageTreeObj->setReferenceLink($this->officeConf['crossRef.']['ifNoAjax.']['link']);
+				} else {
+						$this->pageTreeObj->setPlugInId($this->officeConf['crossRef.']['ifAjax.']['plugInId']);
+						$this->pageTreeObj->setReferenceLink($this->officeConf['crossRef.']['ifAjax.']['link']);
+				}
+				
 				$files = $this->unzipObj->init($fileName);
 				$this->imgData = $this->unzipObj->getFilePath();
 				
@@ -282,16 +293,7 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 												}
 										break;
 									}
-							
-							
-							if (!$this->officeConf['crossRef.']['useAjax'] == 1) {
-									$this->pageTreeObj->setPlugInId($this->officeConf['crossRef.']['ifAjax.']['plugInId']);
-									$this->pageTreeObj->setReferenceLink($this->officeConf['crossRef.']['ifAjax.']['link']);
-							} else {
-							
-									$this->pageTreeObj->setReferenceLink($this->officeConf['crossRef.']['ifAjax.']['link']);
-							}
-							
+
 							return  $this->pageTreeObj->renderTree ($res, $pageId, $this->refArray, $this->officeConf);
 		
 					} return array('ERROR: No XML content found.');
@@ -754,6 +756,7 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 																		//$this->refArray[$index][] = $this->contentArray ['heading_id'];
 									
 																		$this->refArray[$index]['content'][$this->contentArray ['heading_id']] = $this->contentArray ['heading'];
+
 								
 																} else {
 								
@@ -930,14 +933,13 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 		
 		function getHeadingId ($v) {
 			
-			 while(list($ff,$subV)=each($v['subTags']))    {
-				
-					switch($subV['tag']) {
-							case 'TEXT:REFERENCE-MARK-START':
-									return $subV['attributes'] ['TEXT:NAME'];
-									break;
-				 
-					}
+				 while(list($ff,$subV)=each($v['subTags']))    {
+					
+						switch($subV['tag']) {
+								case 'TEXT:REFERENCE-MARK-START':
+										return $subV['attributes'] ['TEXT:NAME'];
+										break;
+						}
 				} 
 		}
 		
@@ -1191,13 +1193,8 @@ class tx_bitsoffice_openoffice extends tx_bitsoffice_xml {
 								break;
 				}
 		}
-		
-		function output ($val) {
-				echo '<pre>';
-						print_r($val);
-				echo '</pre>';
-		}
-		
+
+
 		/**
 		 * @param	[type]		$v: ...
 		 * @return	[type]		...
