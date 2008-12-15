@@ -24,6 +24,11 @@ plugin.bitsoffice {
 			}
 	}
 	
+	# set the colPos for classic PAGE Module
+	colPos = 0
+	
+	
+	# some configuration stuff for cross-references
 	
 	crossRef {
 		
@@ -99,9 +104,7 @@ plugin.bitsoffice {
 			anschrift 					= <p class="anschrift">|</p>
 			kontakt 					= <p class="kontakt">|</p>
 			mod-heading 				= <p class="mod-heading">|</p>
-			ilias additional 			= <div class="hint">|</div>
 			keyboard-shortcut			= <span class="shrtct">|</span>
-			qomet						= <span class="qomet">|</span>
 			bold						= <span class="bold">|</span>
 			kursiv						= <span class="kursiv">|</span>
 			
