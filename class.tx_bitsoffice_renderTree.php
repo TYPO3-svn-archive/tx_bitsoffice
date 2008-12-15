@@ -34,7 +34,8 @@ require_once(PATH_t3lib.'class.t3lib_tcemain.php');
 require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 
 class tx_bitsoffice_renderTree extends t3lib_extobjbase {
-	
+			
+		
 		/***************************************************************************
 		*	This will flip the doc elements in the right 
 		*	order for rendering the pagetree		
@@ -134,6 +135,8 @@ class tx_bitsoffice_renderTree extends t3lib_extobjbase {
 										if (!(empty($data[ $index ]['data']))) {
 												$pageTree['tt_content']['NEW'.$pageIndex]['pid'] = 'NEW'.$pageIndex;
 												$pageTree['tt_content']['NEW'.$pageIndex]['bodytext'] = implode($data[ $index ]['data']);
+												//put the content in the left (0), center (1) or right (2) column
+												$pageTree['tt_content']['NEW'.$pageIndex]['colPos'] = $this->colPos;  
 										}
 															
 										$pageIndex++;		
@@ -184,10 +187,17 @@ class tx_bitsoffice_renderTree extends t3lib_extobjbase {
 		}
 		
 		
+		function setColPos($val) {
+				$this->colPos = $val;
+		}
+		
+		function getColPos () {
+				return $this->colPos;
+		}
+		
 		function setPlugInId($id) {
 				$this->plugInId = $id;
 		}
-		
 		
 		function getPlugInId () {
 				return $this->plugInId;
@@ -203,6 +213,13 @@ class tx_bitsoffice_renderTree extends t3lib_extobjbase {
 				return $this->referenceLink;
 		}
 		
+		function setAjaxMode($val) {
+				$this->ajaxMode = $val;
+		}
+		
+		function getAjaxMode() {
+				return $this->ajaxMode;
+		}
 		
 		/**
 		* we get back the global temp_ids array from the hook. now we can write the references into the content elements
@@ -225,7 +242,7 @@ class tx_bitsoffice_renderTree extends t3lib_extobjbase {
 												$limit 		= 	'';
 												$result 	= $GLOBALS['TYPO3_DB']->exec_SELECTquery( $select, $from, $where, $groupBy, $orderBy, $limit );
 												
-												if (!$this->getAjaxMode == 1) {
+												if (!$this->ajaxMode == 1) {
 														$needle = array(
 																		'###REFID###',
 																		'###LINKTEXT###',
@@ -243,7 +260,7 @@ class tx_bitsoffice_renderTree extends t3lib_extobjbase {
 																	);
 							
 														$replaceVal = array(
-																			$this->getPlugInId(), //href
+																			$this->plugInId, //href
 																			$refID, //src
 																			$refArray[$key]['title']
 																	);
@@ -270,17 +287,8 @@ class tx_bitsoffice_renderTree extends t3lib_extobjbase {
 								$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_bitsoffice_lookup', $insertArray);
 						}
 				}
-		}
-		
-		
-	function output ($val) {
-		
-			echo '<pre>';
-				print_r($val);
-			echo '</pre>';
-		}
-	
-	}
+		}		
+}
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/bitsoffice/class.tx_bitsoffice_renderTree.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/bitsoffice/class.tx_bitsoffice_renderTree.php']);
